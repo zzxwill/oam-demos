@@ -1,0 +1,34 @@
+apiVersion: core.oam.dev/v1alpha2
+kind: Component
+metadata:
+  name: example-deployment
+spec:
+  workload:
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: food-trucks-deployment
+      labels:
+        app: food-trucks
+    spec:
+      selector:
+        matchLabels:
+          app: food-trucks
+      template:
+        metadata:
+          labels:
+            app: food-trucks
+        spec:
+          containers:
+            - name: food-trucks-web
+              image: zzxwill/foodtrucks-web:0.1.1
+              env:
+                - name: discovery.type
+                  value: single-node
+              ports:
+                - containerPort: 5000
+            - name: es
+              image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+              ports:
+                - containerPort: 9200
+                - containerPort: 9300

@@ -1,0 +1,21 @@
+apiVersion: core.oam.dev/v1alpha2
+kind: ApplicationConfiguration
+metadata:
+  name: knative-appconfig
+spec:
+  components:
+    - componentName: knative-configuration
+      traits:
+        - trait:
+            apiVersion: serving.knative.dev/v1
+            kind: Route
+            metadata:
+              name: blue-green-demo # Updating our existing route
+              namespace: default
+            spec:
+              traffic:
+                - revisionName: blue-green-demo-lstjm
+                  percent: 50 # Updating the percentage from 100 to 50
+                - revisionName: blue-green-demo-hhb5p
+                  percent: 50 # Updating the percentage from 0 to 50
+                  tag: v2
